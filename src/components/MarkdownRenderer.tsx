@@ -22,20 +22,26 @@ export default function MarkdownRenderer({ content }: { content: string }) {
               </code>
             );
           }
+          const language = match[1].toLowerCase();
+          const isShell = ["bash", "sh", "zsh", "shell"].includes(language);
           return (
-            <SyntaxHighlighter
-              style={theme === "dark" ? oneDark : oneLight}
-              language={match[1]}
-              PreTag="div"
-              customStyle={{ 
-                margin: 0, 
-                borderRadius: "0.5rem", 
-                fontSize: "0.875rem",
-                backgroundColor: theme === "dark" ? undefined : "hsl(var(--prose-code-bg))",
-              }}
-            >
-              {String(children).replace(/\n$/, "")}
-            </SyntaxHighlighter>
+            <div className={isShell ? "my-4 overflow-hidden rounded-lg border border-border bg-muted/20" : ""}>
+              <SyntaxHighlighter
+                style={theme === "dark" ? oneDark : oneLight}
+                language={match[1]}
+                PreTag="div"
+                customStyle={{
+                  margin: 0,
+                  borderRadius: "0.5rem",
+                  fontSize: "0.875rem",
+                  backgroundColor: isShell
+                    ? (theme === "dark" ? "#121317" : "#f8f9fb")
+                    : (theme === "dark" ? undefined : "hsl(var(--prose-code-bg))"),
+                }}
+              >
+                {String(children).replace(/\n$/, "")}
+              </SyntaxHighlighter>
+            </div>
           );
         },
         h1: ({ children }) => <h1 className="text-3xl font-bold text-prose-headings mt-8 mb-4">{children}</h1>,
