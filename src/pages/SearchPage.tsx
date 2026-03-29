@@ -35,25 +35,51 @@ export default function SearchPage() {
   }, [q]);
 
   return (
-    <div className="mx-auto max-w-3xl px-6 pt-12 pb-24 animate-fade-in">
-      <h1 className="text-2xl font-bold text-foreground mb-2">Search</h1>
-      <p className="text-sm text-muted-foreground mb-8">
-        {q ? `Results for "${q}"` : "Enter a query to search posts"}
-      </p>
+    <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-16 pb-24 animate-fade-in">
+      <header className="mb-14 max-w-2xl border-b border-border/40 pb-6">
+        <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-foreground mb-4">
+          Search Directory
+        </h1>
+        <p className="text-lg text-muted-foreground leading-relaxed font-medium">
+          {q ? `Viewing active results for "${q}"` : "Enter a query above to search all published posts."}
+        </p>
+      </header>
 
       {loading ? (
         <p className="text-sm text-muted-foreground">Searching…</p>
       ) : results.length === 0 && q ? (
         <p className="text-sm text-muted-foreground">No posts found.</p>
       ) : (
-        <div className="divide-y">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {results.map((post) => (
-            <Link key={post.id} to={`/post/${post.slug}`} className="block py-4 group">
-              <h2 className="text-sm font-medium text-foreground group-hover:underline">{post.title}</h2>
-              <p className="text-xs text-muted-foreground mt-0.5">
-                {post.profiles?.username} · {new Date(post.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
-                {post.tags.length > 0 && ` · ${post.tags.join(", ")}`}
-              </p>
+            <Link 
+              key={post.id} 
+              to={`/post/${post.slug}`} 
+              className="group flex flex-col justify-between p-6 rounded-2xl border border-border/40 bg-card hover:border-border hover:shadow-sm transition-all h-[200px]"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <time className="text-xs font-mono text-muted-foreground">
+                    {new Date(post.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                  </time>
+                  <span className="text-muted-foreground opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all">
+                    →
+                  </span>
+                </div>
+                <h3 className="text-xl font-bold text-card-foreground group-hover:text-primary transition-colors line-clamp-2 leading-snug">
+                  {post.title}
+                </h3>
+              </div>
+              
+              {post.tags.length > 0 && (
+                <div className="flex gap-2 mt-4 overflow-hidden">
+                   {post.tags.slice(0, 3).map((tag) => (
+                    <span key={tag} className="inline-flex items-center rounded-md bg-secondary px-2 py-1 text-[10px] uppercase tracking-wider font-semibold text-secondary-foreground shrink-0">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
             </Link>
           ))}
         </div>

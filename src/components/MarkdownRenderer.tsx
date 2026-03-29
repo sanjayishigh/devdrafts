@@ -27,7 +27,12 @@ export default function MarkdownRenderer({ content }: { content: string }) {
               style={theme === "dark" ? oneDark : oneLight}
               language={match[1]}
               PreTag="div"
-              customStyle={{ margin: 0, borderRadius: "0.5rem", fontSize: "0.875rem" }}
+              customStyle={{ 
+                margin: 0, 
+                borderRadius: "0.5rem", 
+                fontSize: "0.875rem",
+                backgroundColor: theme === "dark" ? undefined : "hsl(var(--prose-code-bg))",
+              }}
             >
               {String(children).replace(/\n$/, "")}
             </SyntaxHighlighter>

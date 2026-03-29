@@ -6,10 +6,13 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/lib/theme";
 import { AuthProvider } from "@/lib/auth";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import PostView from "./pages/PostView";
+import Popular from "./pages/Popular";
+import Topics from "./pages/Topics";
 import SearchPage from "./pages/SearchPage";
 import NotFound from "./pages/NotFound";
 
@@ -23,15 +26,22 @@ const App = () => (
           <Toaster />
           <Sonner />
           <BrowserRouter>
-            <Navbar />
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/auth" element={<Auth />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/post/:slug" element={<PostView />} />
-              <Route path="/search" element={<SearchPage />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+            <div className="flex min-h-screen flex-col w-full relative bg-background">
+              <Navbar />
+              <main className="flex-1 w-full mx-auto">
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/auth" element={<Auth />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/post/:slug" element={<PostView />} />
+                  <Route path="/search" element={<SearchPage />} />
+                  <Route path="/popular" element={<Popular />} />
+                  <Route path="/topics" element={<Topics />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </main>
+              <Footer />
+            </div>
           </BrowserRouter>
         </TooltipProvider>
       </AuthProvider>
