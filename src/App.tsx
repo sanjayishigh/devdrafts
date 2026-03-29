@@ -1,6 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -19,18 +18,6 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-const RouteDebugProbe = () => {
-  const location = useLocation();
-
-  useEffect(() => {
-    // #region agent log
-    window.fetch('http://127.0.0.1:7360/ingest/af5995a3-58bd-499f-a090-e40860fbde65',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'6973d5'},body:JSON.stringify({sessionId:'6973d5',runId:'post-fix',hypothesisId:'H8',location:'src/App.tsx:RouteDebugProbe',message:'Route change observed',data:{origin:window.location.origin,path:location.pathname,href:window.location.href},timestamp:Date.now()})}).catch(()=>{});
-    // #endregion
-  }, [location.pathname]);
-
-  return null;
-};
-
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider>
@@ -40,7 +27,6 @@ const App = () => (
           <Sonner />
           <BrowserRouter>
             <div className="flex min-h-screen flex-col w-full relative bg-background">
-              <RouteDebugProbe />
               <Navbar />
               <main className="flex-1 w-full mx-auto">
                 <Routes>
