@@ -74,7 +74,7 @@ export default function Topics() {
         <header className="mb-14 max-w-2xl border-b border-border/40 pb-6">
           <div className="flex items-center gap-3 text-primary mb-4">
             <Layers className="h-8 w-8" />
-            <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-foreground">Explore Taxonomy</h1>
+            <h1 className="text-4xl sm:text-4xl font-extrabold tracking-tight text-foreground">Explore</h1>
           </div>
           <p className="text-lg text-muted-foreground leading-relaxed font-medium">Filter the developer timeline by specific tags, technologies, and concepts. Browse precisely what you want to read.</p>
         </header>

@@ -58,7 +58,7 @@ export default function Popular() {
       <header className="mb-14 max-w-2xl border-b border-border/40 pb-6">
         <div className="flex items-center gap-3 text-primary mb-4">
           <TrendingUp className="h-8 w-8" />
-          <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-foreground">Most Read</h1>
+          <h1 className="text-4xl sm:text-4.5xl font-extrabold tracking-tight text-foreground">Most Read</h1>
         </div>
         <p className="text-lg text-muted-foreground leading-relaxed font-medium">The most popular articles on devdrafts, ranked by community views.</p>
       </header>

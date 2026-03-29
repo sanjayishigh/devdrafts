@@ -119,21 +119,21 @@ export default function Dashboard() {
   return (
     <div className="mx-auto max-w-3xl px-6 pt-12 pb-24 animate-fade-in">
       <div className="flex items-center justify-between mb-8">
-        <h1 className="text-2xl font-bold text-foreground">Your posts</h1>
+        <h1 className="text-4xl font-bold text-foreground">Your posts</h1>
         {!editing && (
           <button
             onClick={() => setEditing(true)}
-            className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:opacity-90 transition-opacity"
+            className="inline-flex items-center gap-1.5 rounded-md bg-primary px-4 py-2.5 text-xs font-medium text-primary-foreground hover:opacity-90 transition-opacity"
           >
-            <Plus className="h-3.5 w-3.5" /> New post
+            <Plus className="h-4 w-4" /> New post
           </button>
         )}
       </div>
 
       {editing && (
-        <div className="mb-10 space-y-4 rounded-lg border p-6">
+        <div className="mb-14 space-y-8 rounded-xl border p-10">
           <div>
-            <label className="text-xs font-medium text-muted-foreground mb-1 block">Title</label>
+            <label className="text-lg font-large text-muted-foreground mb-1 block">Title</label>
             <input
               value={title}
               onChange={(e) => handleTitleChange(e.target.value)}
