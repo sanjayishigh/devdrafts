@@ -5,6 +5,9 @@ const NotFound = () => {
   const location = useLocation();
 
   useEffect(() => {
+    // #region agent log
+    window.fetch('http://127.0.0.1:7360/ingest/af5995a3-58bd-499f-a090-e40860fbde65',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'6973d5'},body:JSON.stringify({sessionId:'6973d5',runId:'post-fix',hypothesisId:'H5',location:'src/pages/NotFound.tsx:useEffect',message:'Router fallback not found rendered',data:{path:location.pathname},timestamp:Date.now()})}).catch(()=>{});
+    // #endregion
     console.error("404 Error: User attempted to access non-existent route:", location.pathname);
   }, [location.pathname]);
 

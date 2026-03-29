@@ -20,25 +20,57 @@ export default function PostView() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetch = async () => {
-      // 1. Fetch Post Data
-      const { data } = await supabase
+    const loadPost = async () => {
+      // #region agent log
+      window.fetch('http://127.0.0.1:7360/ingest/af5995a3-58bd-499f-a090-e40860fbde65',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'6973d5'},body:JSON.stringify({sessionId:'6973d5',runId:'post-fix',hypothesisId:'H1',location:'src/pages/PostView.tsx:fetch:start',message:'PostView fetch started',data:{slug:slug ?? null,path:window.location.pathname},timestamp:Date.now()})}).catch(()=>{});
+      // #endregion
+      const selectWithViews =
+        "id, title, content, tags, created_at, views, profiles(username, avatar_url)";
+      const selectWithoutViews =
+        "id, title, content, tags, created_at, profiles(username, avatar_url)";
+
+      // 1. Fetch post (match Popular.tsx: if views column/RPC migration not applied, retry without views)
+      let { data, error } = await supabase
         .from("posts")
-        .select("id, title, content, tags, created_at, views, profiles(username, avatar_url)")
+        .select(selectWithViews)
         .eq("slug", slug)
         .single();
-      
-      setPost(data as unknown as PostData);
+
+      // #region agent log
+      window.fetch('http://127.0.0.1:7360/ingest/af5995a3-58bd-499f-a090-e40860fbde65',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'6973d5'},body:JSON.stringify({sessionId:'6973d5',runId:'post-fix',hypothesisId:'H2',location:'src/pages/PostView.tsx:fetch:after-first',message:'Post query first attempt',data:{slug:slug ?? null,hasData:Boolean(data),error:error?.message ?? null,errorCode:error?.code ?? null},timestamp:Date.now()})}).catch(()=>{});
+      // #endregion
+
+      if (error) {
+        const second = await supabase
+          .from("posts")
+          .select(selectWithoutViews)
+          .eq("slug", slug)
+          .single();
+        data = second.data;
+        error = second.error;
+        // #region agent log
+        window.fetch('http://127.0.0.1:7360/ingest/af5995a3-58bd-499f-a090-e40860fbde65',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'6973d5'},body:JSON.stringify({sessionId:'6973d5',runId:'post-fix',hypothesisId:'H6',location:'src/pages/PostView.tsx:fetch:fallback',message:'PostView retried without views column',data:{slug:slug ?? null,hasData:Boolean(data),error:error?.message ?? null,errorCode:error?.code ?? null},timestamp:Date.now()})}).catch(()=>{});
+        // #endregion
+      }
+
+      // #region agent log
+      window.fetch('http://127.0.0.1:7360/ingest/af5995a3-58bd-499f-a090-e40860fbde65',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'6973d5'},body:JSON.stringify({sessionId:'6973d5',runId:'post-fix',hypothesisId:'H2',location:'src/pages/PostView.tsx:fetch:final',message:'Post query final',data:{slug:slug ?? null,hasData:Boolean(data),dbSlug:(data as any)?.slug ?? null,error:error?.message ?? null,errorCode:error?.code ?? null},timestamp:Date.now()})}).catch(()=>{});
+      // #endregion
+
+      setPost((data as unknown as PostData) ?? null);
       setLoading(false);
 
       // 2. Increment Views asynchronously without blocking render
       if (slug) {
         (supabase.rpc as any)("increment_post_views", { post_slug: slug }).then(({ error }: any) => {
+          // #region agent log
+          window.fetch('http://127.0.0.1:7360/ingest/af5995a3-58bd-499f-a090-e40860fbde65',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'6973d5'},body:JSON.stringify({sessionId:'6973d5',runId:'post-fix',hypothesisId:'H4',location:'src/pages/PostView.tsx:views:rpc',message:'Increment post views RPC finished',data:{slug,error:error?.message ?? null},timestamp:Date.now()})}).catch(()=>{});
+          // #endregion
           if (error) console.error("Error incrementing views. Migration missing?", error);
         });
       }
     };
-    fetch();
+    loadPost();
   }, [slug]);
 
   const readingTime = useMemo(() => {
@@ -56,6 +88,9 @@ export default function PostView() {
   }
 
   if (!post) {
+    // #region agent log
+    window.fetch('http://127.0.0.1:7360/ingest/af5995a3-58bd-499f-a090-e40860fbde65',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'6973d5'},body:JSON.stringify({sessionId:'6973d5',runId:'post-fix',hypothesisId:'H3',location:'src/pages/PostView.tsx:render:not-found',message:'PostView rendered not found state',data:{slug:slug ?? null,path:window.location.pathname},timestamp:Date.now()})}).catch(()=>{});
+    // #endregion
     return (
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-32 pb-32 flex flex-col items-center">
         <h1 className="text-2xl font-bold mb-4">404 - Post Not Found</h1>
